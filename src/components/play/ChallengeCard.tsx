@@ -15,7 +15,7 @@ interface Props {
   busy?: boolean
 }
 
-export function ChallengeCard({ team, mode, challenge, locationName, onComplete, onVeto, busy }: Props) {
+export function ChallengeCard({ mode, challenge, locationName, onComplete, onVeto, busy }: Props) {
   const [photo, setPhoto] = useState<File | null>(null)
   const isHandicap = challenge.type === 'handicap'
 
