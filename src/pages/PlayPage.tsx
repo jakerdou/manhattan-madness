@@ -5,20 +5,22 @@ import { useTeamSession } from '../hooks/useTeamSession'
 import challenges from '../data/challenges.json'
 import locations from '../data/locations.json'
 import { ChallengeCard } from '../components/play/ChallengeCard'
-import { LocationPicker } from '../components/play/LocationPicker'
+import { ClaimLocationModal } from '../components/play/ClaimLocationModal'
 import { generateChallengeForTravel, startClaimLocation, completeActiveChallenge, vetoActiveChallenge } from '../services/firestore'
 import { uploadTeamPhoto } from '../services/storage'
+import { ConfirmModal } from '../components/ConfirmModal'
 
 export default function PlayPage() {
   const [open, setOpen] = useState(false)
   const { teamId, team, loading, signIn } = useTeamSession()
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [showPicker, setShowPicker] = useState(false)
+  const [showClaimModal, setShowClaimModal] = useState(false)
+  const [showGenerateConfirm, setShowGenerateConfirm] = useState(false)
 
   const activeChallenge = team?.activeChallenge
   const activeChallengeMeta = activeChallenge
-    ? (challenges as Array<{ id: number; description: string; points: number }>).find((c) => c.id === activeChallenge.challengeId) || null
+    ? (challenges as Array<{ id: number; description: string; points: number; type?: string }>).find((c) => c.id === activeChallenge.challengeId) || null
     : null
   const claimingLocation = activeChallenge?.isForLocationClaim && activeChallenge.locationId != null
     ? (locations as Array<{ id: number; name: string; points: number }>).find((l) => l.id === activeChallenge.locationId) || null
@@ -46,6 +48,7 @@ export default function PlayPage() {
     try {
       console.debug('[MM] UI handleGenerate', { teamId, canGenerate })
       await generateChallengeForTravel(teamId)
+      setShowGenerateConfirm(false)
     } catch (e: any) {
       console.error('[MM] handleGenerate error', e)
       setError(e?.message ?? 'Failed to generate challenge')
@@ -61,7 +64,7 @@ export default function PlayPage() {
     try {
       console.debug('[MM] UI handlePickLocation', { teamId, id })
       await startClaimLocation(teamId, id)
-      setShowPicker(false)
+      setShowClaimModal(false)
     } catch (e: any) {
       console.error('[MM] handlePickLocation error', e)
       setError(e?.message ?? 'Failed to start claim')
@@ -70,18 +73,22 @@ export default function PlayPage() {
     }
   }
 
-  async function handleComplete(photo: File) {
+  async function handleComplete(photo: File | null) {
     if (!teamId || !team) return
     setError(null)
     setBusy(true)
     try {
-      console.debug('[MM] UI handleComplete upload start', { size: photo.size, type: photo.type })
-      const url = await uploadTeamPhoto(teamId, photo, { 
-        teamName: team.name,
-        locationName: claimingLocationName || undefined,
-        challengeId: activeChallenge?.challengeId
-      })
-      console.debug('[MM] UI handleComplete upload done', { url })
+      const isHandicap = activeChallengeMeta?.type === 'handicap'
+      let url = ''
+      if (!isHandicap && photo) {
+        console.debug('[MM] UI handleComplete upload start', { size: photo.size, type: photo.type })
+        url = await uploadTeamPhoto(teamId, photo, { 
+          teamName: team.name,
+          locationName: claimingLocationName || undefined,
+          challengeId: activeChallenge?.challengeId
+        })
+        console.debug('[MM] UI handleComplete upload done', { url })
+      }
       await completeActiveChallenge(teamId, { photoUrl: url })
     } catch (e: any) {
       console.error('[MM] handleComplete error', e)
@@ -127,10 +134,10 @@ export default function PlayPage() {
               footer={
                 !activeChallenge ? (
                   <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                    <button className="btn-primary" onClick={handleGenerate} disabled={!canGenerate || busy}>
+                    <button className="btn-primary" onClick={() => setShowGenerateConfirm(true)} disabled={!canGenerate || busy}>
                       Generate Challenge
                     </button>
-                    <button className="btn-secondary" onClick={() => setShowPicker(true)} disabled={!canClaim || busy}>
+                    <button className="btn-secondary" onClick={() => setShowClaimModal(true)} disabled={!canClaim || busy}>
                       Claim Location
                     </button>
                   </div>
@@ -141,19 +148,6 @@ export default function PlayPage() {
             {error && (
               <div className="mt-3 rounded-md border border-red-800 bg-red-950/40 px-3 py-2 text-red-300 text-sm">
                 {error}
-              </div>
-            )}
-
-            {!activeChallenge && showPicker && team && (
-              <div className="mt-4 rounded-lg border border-slate-800 bg-slate-900 p-4">
-                <LocationPicker
-                  locations={locations as any}
-                  claimedIds={(team.claimedLocations || []) as number[]}
-                  onSelect={handlePickLocation}
-                />
-                <div className="mt-3 text-right">
-                  <button className="btn-secondary" onClick={() => setShowPicker(false)} disabled={busy}>Close</button>
-                </div>
               </div>
             )}
 
@@ -185,6 +179,26 @@ export default function PlayPage() {
           signIn(id)
           setOpen(false)
         }}
+      />
+
+      <ConfirmModal
+        open={showGenerateConfirm}
+        title="Generate Challenge"
+        message="Are you sure you want to generate a challenge? You will have to either complete it or veto it before claiming your next location."
+        confirmText="Generate"
+        cancelText="Cancel"
+        onConfirm={handleGenerate}
+        onCancel={() => setShowGenerateConfirm(false)}
+        busy={busy}
+      />
+
+      <ClaimLocationModal
+        open={showClaimModal}
+        locations={locations as any}
+        claimedIds={team?.claimedLocations as number[] || []}
+        onClaim={handlePickLocation}
+        onClose={() => setShowClaimModal(false)}
+        busy={busy}
       />
     </section>
   )

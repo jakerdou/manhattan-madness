@@ -10,6 +10,7 @@ export function BottomNav() {
         <Tab to="/play" label="Play" />
         <Tab to="/leaderboard" label="Leaderboard" />
         <Tab to="/about" label="About" />
+        <Tab to="/settings" label="Settings" />
       </div>
     </nav>
   )

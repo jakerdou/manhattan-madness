@@ -7,10 +7,7 @@ export function AppLayout() {
       className="min-h-screen bg-slate-950 text-slate-100"
       style={{ minHeight: '100dvh', width: '100%' }}
     >
-      <main
-        // className="mx-auto max-w-xl p-4 pb-16"
-        // style={{ width: '100dvw', boxSizing: 'border-box' }}
-      >
+      <main className="pb-20">
         <Outlet />
       </main>
       <BottomNav />

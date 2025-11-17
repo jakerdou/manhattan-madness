@@ -5,6 +5,7 @@ import { AppLayout } from './components/layout/AppLayout'
 import LeaderboardPage from './pages/LeaderboardPage'
 import PlayPage from './pages/PlayPage'
 import AboutPage from './pages/AboutPage'
+import SettingsPage from './pages/SettingsPage'
 
 function App() {
   useEffect(() => {
@@ -23,6 +24,7 @@ function App() {
             <Route path="/leaderboard" element={<LeaderboardPage />} />
             <Route path="/play" element={<PlayPage />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

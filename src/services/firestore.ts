@@ -13,6 +13,7 @@ export interface Team {
   totalPoints: number
   claimedLocations: number[]
   lastClaimedLocation: string | null
+  lastClaimedPhotoUrl?: string | null
   lastClaimedAt: any
   challengesAttemptedSinceLastClaim: number
   currentState: TeamState
@@ -46,6 +47,7 @@ export async function createTeam(name: string, passcode: string): Promise<string
     totalPoints: 0,
     claimedLocations: [],
     lastClaimedLocation: null,
+    lastClaimedPhotoUrl: null,
     lastClaimedAt: null,
     challengesAttemptedSinceLastClaim: 0,
     currentState: 'traveling',
@@ -63,13 +65,13 @@ export async function verifyTeamPasscode(teamId: string, passcode: string): Prom
   return passcode === data.passcode || (!!admin && passcode === admin)
 }
 
-export function observeLeaderboard(onChange: (teams: Array<{ id: string; name: string; totalPoints: number; lastClaimedLocation: string | null }>) => void): Unsubscribe {
+export function observeLeaderboard(onChange: (teams: Array<{ id: string; name: string; totalPoints: number; lastClaimedLocation: string | null; lastClaimedPhotoUrl?: string | null }>) => void): Unsubscribe {
   const db = getDb()
   const q = query(collection(db, TEAMS), orderBy('totalPoints', 'desc'))
   return onSnapshot(q, (snap) => {
     const rows = snap.docs.map((d) => {
       const t = d.data() as Team
-      return { id: d.id, name: t.name, totalPoints: t.totalPoints, lastClaimedLocation: t.lastClaimedLocation ?? null }
+      return { id: d.id, name: t.name, totalPoints: t.totalPoints, lastClaimedLocation: t.lastClaimedLocation ?? null, lastClaimedPhotoUrl: t.lastClaimedPhotoUrl ?? null }
     })
     onChange(rows)
   })
@@ -162,7 +164,7 @@ export async function startClaimLocation(teamId: string, locationId: number): Pr
   })
 }
 
-export async function completeActiveChallenge(teamId: string, opts: { photoUrl: string }): Promise<void> {
+export async function completeActiveChallenge(teamId: string, opts: { photoUrl?: string }): Promise<void> {
   const db = getDb()
   await ensureAnonymousAuth()
   try {
@@ -186,6 +188,7 @@ export async function completeActiveChallenge(teamId: string, opts: { photoUrl: 
         totalPoints: newPoints,
         claimedLocations: claimed,
         lastClaimedLocation: loc.name,
+        lastClaimedPhotoUrl: opts.photoUrl,
         lastClaimedAt: serverTimestamp(),
         challengesAttemptedSinceLastClaim: 0,
         currentState: 'traveling',

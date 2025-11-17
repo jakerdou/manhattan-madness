@@ -1,4 +1,4 @@
-# Manhattan Madness 2.0
+# Manhattan Madness
 
 A mobile-first web application for running automated, real-time scavenger hunt games across Manhattan. Teams compete to claim locations, complete challenges, and climb the leaderboard in this location-based adventure game.
 

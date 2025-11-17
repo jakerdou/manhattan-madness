@@ -7,9 +7,9 @@ export default function LeaderboardPage() {
   const [createdTeamId, setCreatedTeamId] = useState<string | null>(null)
 
   return (
-    <section className="space-y-4">
+    <section className="mx-auto max-w-2xl space-y-4 p-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Leaderboard</h1>
+        <h1 className="text-2xl font-bold text-primary-300">Leaderboard</h1>
         {/* <button className="btn-primary" onClick={() => setCreateOpen(true)}>Create Team</button> */}
       </div>
 
@@ -19,9 +19,7 @@ export default function LeaderboardPage() {
         </div>
       )}
 
-      <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-4">
-        <LeaderboardProbe />
-      </div>
+      <LeaderboardProbe />
 
       <CreateTeamModal
         open={createOpen}

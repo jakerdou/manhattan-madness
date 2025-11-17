@@ -44,8 +44,8 @@ a {
 
 /* Utility helpers for brand buttons */
 .btn-primary {
-  @apply inline-flex items-center justify-center rounded-md bg-primary-600 px-4 py-2 font-medium text-white shadow hover:bg-primary-500 active:bg-primary-700;
+  @apply inline-flex items-center justify-center rounded-md bg-primary-600 px-4 py-2 font-medium text-white shadow hover:bg-primary-500 active:bg-primary-700 disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed disabled:hover:bg-slate-700;
 }
 .btn-secondary {
-  @apply inline-flex items-center justify-center rounded-md bg-secondary-600 px-4 py-2 font-medium text-white shadow hover:bg-secondary-500 active:bg-secondary-700;
+  @apply inline-flex items-center justify-center rounded-md bg-secondary-600 px-4 py-2 font-medium text-white shadow hover:bg-secondary-500 active:bg-secondary-700 disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed disabled:hover:bg-slate-700;
 }
