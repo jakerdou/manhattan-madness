@@ -17,19 +17,20 @@ function App() {
 
   return (
     <div style={{ padding: '1rem' }}>
+      test outside of router
       <BrowserRouter>
         <Routes>
           <Route element={<AppLayout />}>
-            <Route index element={<Navigate to="leaderboard" replace />} />
+            {/* <Route index element={<Navigate to="leaderboard" replace />} />
             <Route path="leaderboard" element={<LeaderboardPage />} />
             <Route path="play" element={<PlayPage />} />
             <Route path="about" element={<AboutPage />} />
-            <Route path="settings" element={<SettingsPage />} />
-            {/* <Route index element={<Navigate to="/leaderboard" replace />} />
+            <Route path="settings" element={<SettingsPage />} /> */}
+            <Route index element={<Navigate to="/leaderboard" replace />} />
             <Route path="/leaderboard" element={<LeaderboardPage />} />
             <Route path="/play" element={<PlayPage />} />
             <Route path="/about" element={<AboutPage />} />
-            <Route path="/settings" element={<SettingsPage />} /> */}
+            <Route path="/settings" element={<SettingsPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
