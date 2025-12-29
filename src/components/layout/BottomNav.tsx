@@ -7,10 +7,6 @@ export function BottomNav() {
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
       <div className="mx-auto flex max-w-xl items-center px-3 py-2">
-        {/* <Tab to="play" label="Play" />
-        <Tab to="leaderboard" label="Leaderboard" />
-        <Tab to="about" label="About" />
-        <Tab to="settings" label="Settings" /> */}
         <Tab to="/play" label="Play" />
         <Tab to="/leaderboard" label="Leaderboard" />
         <Tab to="/about" label="About" />

@@ -16,16 +16,9 @@ function App() {
   }, [])
 
   return (
-    <div style={{ padding: '1rem' }}>
-      test outside of router
-      <BrowserRouter>
-        <Routes>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
+      <Routes>
           <Route element={<AppLayout />}>
-            {/* <Route index element={<Navigate to="leaderboard" replace />} />
-            <Route path="leaderboard" element={<LeaderboardPage />} />
-            <Route path="play" element={<PlayPage />} />
-            <Route path="about" element={<AboutPage />} />
-            <Route path="settings" element={<SettingsPage />} /> */}
             <Route index element={<Navigate to="/leaderboard" replace />} />
             <Route path="/leaderboard" element={<LeaderboardPage />} />
             <Route path="/play" element={<PlayPage />} />
@@ -33,8 +26,7 @@ function App() {
             <Route path="/settings" element={<SettingsPage />} />
           </Route>
         </Routes>
-      </BrowserRouter>
-    </div>
+    </BrowserRouter>
   )
 }
 
