@@ -94,8 +94,11 @@ export function observeTeams(onChange: (teams: Array<{ id: string; name: string 
   })
 }
 
-function pickRandomChallengeId(): number {
-  const list = challenges as Array<{ id: number }>
+function pickRandomChallengeId(excludeHandicaps = false): number {
+  let list = challenges as Array<{ id: number; type?: string }>
+  if (excludeHandicaps) {
+    list = list.filter((c) => c.type !== 'handicap')
+  }
   const idx = Math.floor(Math.random() * list.length)
   return list[idx].id
 }
@@ -154,7 +157,7 @@ export async function startClaimLocation(teamId: string, locationId: number): Pr
     if (team.activeChallenge) throw new Error('Active challenge already exists')
     if ((team.claimedLocations || []).includes(locationId)) throw new Error('Location already claimed')
 
-    const challengeId = pickRandomChallengeId()
+    const challengeId = pickRandomChallengeId(true)
     const patch: Partial<Team> = {
       currentState: 'claiming_location',
       activeChallenge: { challengeId, isForLocationClaim: true, locationId },
@@ -255,7 +258,7 @@ export async function vetoActiveChallenge(teamId: string): Promise<void> {
 
     if (active.isForLocationClaim) {
       // stay in claiming; regenerate a new challenge for same location
-      const newChallengeId = pickRandomChallengeId()
+      const newChallengeId = pickRandomChallengeId(true)
       const newPoints = (team.totalPoints ?? 0) + penalty
       const patch: Partial<Team> = {
         totalPoints: newPoints,
