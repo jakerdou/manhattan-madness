@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { ensureAnonymousAuth } from './lib/firebase'
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AppLayout } from './components/layout/AppLayout'
 import LeaderboardPage from './pages/LeaderboardPage'
 import PlayPage from './pages/PlayPage'
@@ -16,7 +16,7 @@ function App() {
   }, [])
 
   return (
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
+    <HashRouter>
       <Routes>
           <Route element={<AppLayout />}>
             <Route index element={<Navigate to="/leaderboard" replace />} />
@@ -26,7 +26,7 @@ function App() {
             <Route path="/settings" element={<SettingsPage />} />
           </Route>
         </Routes>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
