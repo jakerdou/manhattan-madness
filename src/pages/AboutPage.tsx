@@ -69,13 +69,23 @@ export default function AboutPage() {
         <h2 className="text-xl font-semibold text-secondary-400">Links</h2>
         <ul className="list-disc list-inside space-y-1 text-slate-300 ml-2">
           <li>
-            <a 
-              href="https://sites.google.com/view/metromaze/nyc-games/manhattan-madness" 
-              target="_blank" 
+            <a
+              href="https://sites.google.com/view/metromaze/nyc-games/manhattan-madness"
+              target="_blank"
               rel="noopener noreferrer"
               className="text-secondary-400 hover:text-secondary-300"
             >
               Original Game
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.google.com/maps/d/u/0/viewer?mid=1BLpWoHyzKBEGnWSPokY9NDchpkEdb68&femb=1&ll=40.71736673318078%2C-73.97708295000001&z=10"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-secondary-400 hover:text-secondary-300"
+            >
+              Map of Locations
             </a>
           </li>
         </ul>

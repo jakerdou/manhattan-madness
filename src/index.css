@@ -25,6 +25,13 @@
   --color-secondary-700: #0e7490;
   --color-secondary-800: #155e75;
   --color-secondary-900: #164e63;
+
+  /* Location marker colors */
+  --color-marker-green: #0f9d58;
+  --color-marker-blue: #01579b;
+  --color-marker-red: #e65100;
+  --color-marker-purple: #9c27b0;
+  --color-marker-gold: #f9a825;
 }
 
 /* Base + layout defaults */
