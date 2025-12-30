@@ -9,6 +9,7 @@ export function BottomNav() {
       <div className="mx-auto flex max-w-xl items-center px-3 py-2">
         <Tab to="/play" label="Play" />
         <Tab to="/leaderboard" label="Leaderboard" />
+        <Tab to="/map" label="Map" />
         <Tab to="/about" label="About" />
         <Tab to="/settings" label="Settings" />
       </div>

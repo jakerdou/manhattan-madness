@@ -10,7 +10,6 @@ export default function LeaderboardPage() {
     <section className="mx-auto max-w-2xl space-y-4 p-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-primary-300">Leaderboard</h1>
-        {/* <button className="btn-primary" onClick={() => setCreateOpen(true)}>Create Team</button> */}
       </div>
 
       {createdTeamId && (

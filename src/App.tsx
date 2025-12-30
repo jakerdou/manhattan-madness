@@ -4,6 +4,7 @@ import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AppLayout } from './components/layout/AppLayout'
 import LeaderboardPage from './pages/LeaderboardPage'
 import PlayPage from './pages/PlayPage'
+import MapPage from './pages/MapPage'
 import AboutPage from './pages/AboutPage'
 import SettingsPage from './pages/SettingsPage'
 
@@ -22,6 +23,7 @@ function App() {
             <Route index element={<Navigate to="/leaderboard" replace />} />
             <Route path="/leaderboard" element={<LeaderboardPage />} />
             <Route path="/play" element={<PlayPage />} />
+            <Route path="/map" element={<MapPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/settings" element={<SettingsPage />} />
           </Route>
